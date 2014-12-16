@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14178278455690" configfile="/pentago/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="registration.xhtml" x="122" y="178" id="pf14179951463800" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14179951463801" path="/registration.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="index.xhtml" x="338" y="178" id="pf14179951463802" referenceLink="//@navigationRule.1/@fromViewId|" inlinks="pf14179951463801" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="postLogin.xhtml" x="554" y="178" id="pf14179951463804" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf14184275762280" path="/postLogin.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="availGames.xhtml" x="770" y="178" id="pf14184275762281" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf14184275762280" path="/availGames.xhtml"/>
+  <links id="pf14179951463801" target="pf14179951463802" source="pf14179951463800" outcome="welcome"/>
+  <links id="pf14184275762280" target="pf14184275762281" source="pf14179951463804" outcome="availableGames"/>
+</pageflow:Pageflow>

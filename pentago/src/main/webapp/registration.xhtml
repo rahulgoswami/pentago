@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"> 
+<f:view>
+<h:head>
+
+</h:head> 
+<h:body> 
+	 <h2><center>REGISTRATION FORM</center></h2>
+	 <h:form>
+	 	  <p:menubar style="margin-bottom:30px">
+    			<p:menuitem value="Home" icon="ui-icon-home" url="index.xhtml"/>
+    			  			
+        	</p:menubar>
+        	<center>
+		  <p:fieldset legend="Registration Form" widgetVar="regWidget" style="width: 720px;">
+			   <h:panelGrid columns="3" width="700" border="0">
+				    <h:outputLabel for= "userName" value="UserName*" />
+				    <p:inputText value="#{registrationBean.playerInfo.userName}" 
+				       id="userName"
+				        required="true" 
+				        requiredMessage="UserName is required"
+				        validatorMessage="UsesrName should be of length from 5 to 15 chars" >
+				    <f:validateLength minimum="5" maximum="15" for="userName"/>
+				    </p:inputText>
+				    <p:message for="userName"/>
+				    
+			
+				    <h:outputLabel value="Password*" />
+				    <p:password value="#{registrationBean.playerInfo.password}"
+				       id="password"
+				       required="true" 
+				       requiredMessage="Password is required"
+				       validatorMessage="Password should be of length from 5 to 15 chars, contains lower and upper with special symbols">
+				       <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"></f:validateRegex>>
+				    <f:validateLength minimum="5" maximum="20" for="password"></f:validateLength>
+				    </p:password>
+				    <p:message for="password" />
+				    
+				    <h:outputLabel value="First Name*" />
+				    <p:inputText value="#{registrationBean.playerInfo.firstName}"
+				       id="firstName"
+				       required="true" 
+				       requiredMessage="FirstName is required"
+				       validatorMessage="FirstName should be of length from 5 to 15 chars"
+				       >
+				      <f:validateLength minimum="5" maximum="15" for="firstName"></f:validateLength>
+				    </p:inputText>
+				    <p:message for="firstName" />
+				    
+				    
+				    <h:outputLabel value="Last Name" />
+				    <p:inputText value="#{registrationBean.playerInfo.lastName}"
+				       id="lastName"></p:inputText>
+				    <p:message for="lastName" />
+				    
+				    <h:outputLabel value="Email*" />
+				    <p:inputText value="#{registrationBean.playerInfo.email}"
+				       id="email"
+				       validatorMessage="Invalid Email">
+				     <f:validateRegex pattern="[a-zA-Z0-9]+@[a-zA-Z]+.[a-zA-Z]{2,3}"></f:validateRegex>   
+				    </p:inputText>
+				    <p:message for="email" />
+				   
+				    <!-- <h:outputLabel value="Email*" /> -->
+				    <p:commandButton value="Register" action="#{registrationBean.savePlayerInfo}" ajax="false" style="margin-left:100px"></p:commandButton>
+			   </h:panelGrid>
+		  </p:fieldset>
+		  </center>
+	 
+	 </h:form>
+</h:body>
+</f:view> 
+</html>

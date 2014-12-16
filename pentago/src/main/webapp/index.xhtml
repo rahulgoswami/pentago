@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+<title>First JSF Example</title>
+</h:head>
+<h:body>
+	<h2><center>Welcome! Let the games begin!!</center></h2>
+		<h:form>
+			<p:menubar style="margin-bottom:30px">
+				<p:menuitem value="Home" icon="ui-icon-home" url="index.xhtml"/>	
+   			</p:menubar>
+   			<center>
+			<p:fieldset legend="Login Form" widgetVar="regWidget" style="width: 720px;">
+				<h:outputLabel id="displayResponse" value="#{loginBean.message}" style="font-size:15px; color:#ff0000"/>
+				<h:panelGrid columns="3" width="600px" border="0" style="margin-bottom:10px">
+	               	
+	                <h:outputLabel value="Username"/>
+	                <p:inputText value="#{loginBean.userName}"
+	                	id="userName"
+				    	required="true" 
+				        requiredMessage="UserName is required"
+				        validatorMessage="UsesrName should be of length from 5 to 15 chars">
+				     <f:validateLength minimum="5" maximum="15" for="userName"/>
+				     </p:inputText>
+				     <p:message for="userName"/>
+	                
+	                <h:outputLabel value="Password" />
+	                <p:password  value="#{loginBean.password}"
+	                	id="password"
+				    	required="true" 
+				        requiredMessage="Password is required"
+				        validatorMessage="Password should be of length from 5 to 15 chars">
+				     <f:validateLength minimum="5" maximum="15" for="password"/>
+				     </p:password>
+	                <p:message for="password"/>
+	                
+	                <!-- <p:message/> --><!-- <p:message/> -->
+	                
+	             </h:panelGrid>
+	             <p:commandButton actionListener="#{loginBean.validateLogin}" action="#{loginBean.validateLogin}" value="Login" update="displayResponse" ajax = "false" style="margin-bottom:20px"/><br/>
+	             <h:link value="New User? Register here" outcome="registration" />
+            </p:fieldset>
+            </center>
+			
+</h:form>
+
+
+</h:body>
+</html>

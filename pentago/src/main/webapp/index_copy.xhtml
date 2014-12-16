@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>First JSF Example</title>
+</h:head>
+<h:body>
+	<h3>Welcomeeeee!!!!PHEWWWW!!!!</h3>
+	<h:form>
+		<p:growl id="messages"/>
+ 
+    <p:menubar>
+    	<p:menuitem value="Home" icon="ui-icon-document" style="margin-bottom:30px"/>
+        
+        
+ 
+        <f:facet name="options">
+            <p:inputText style="margin-right:10px" placeholder="Search"/>
+            <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+        </f:facet>
+        
+    </p:menubar>
+    
+		First Name : <input type = "text" name = "fname"/>
+		<h:outputLabel value = "username"></h:outputLabel>
+		<h:selectOneRadio id="apple">
+			<f:selectItem itemValue="apple" itemLabel="apple"/>
+			<f:selectItem itemValue="banana" itemLabel="banana"/>
+		</h:selectOneRadio>
+		
+		<p:panel header="Validate"/> 
+		
+		
+		<h3 style="margin-top: 0">Basic OrderList</h3>
+ 		<p:orderList value="#{orderListView.cities}" var="city" controlsLocation="none" itemLabel="#{city}" itemValue="#{city}" />
+    	<p:commandButton value="Submit" update="displayCities" oncomplete="PF('cityDialog').show()" style="margin-top:5px" />
+ 
+		     
+		<p:spinner /> 
+	</h:form>
+</h:body>
+</html>

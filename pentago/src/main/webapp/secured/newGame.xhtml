@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>  
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>Insert title here</title>
+	</h:head>
+	<h:body>
+		<h:form>
+			<p:menubar style="margin-bottom:30px">
+	   			  			 			
+	   			<f:facet name="options">
+	   				<h:outputLabel id="user" value="#{gameManagerBean.userName} : " style="margin-right:20px" />
+		            <p:commandButton action="#{gameManagerBean.doLogout}" value="Logout" icon="ui-icon-extlink" style="margin-left:10 px" />
+	       		</f:facet>
+	       	</p:menubar>
+	       	<center>
+	   		<p:fieldset legend="Current Game" widgetVar="regWidget" style="width: 400px;">
+	   			<p:messages id="messages" showDetail="true" autoUpdate="false" closable="true" />  
+	   			<center>
+	   			<p:dataTable id="stats" var="rows" value="#{gameManagerBean.rows}" style="margin-bottom:20px" border='1'>
+					    <p:column >
+					         <h:outputText value="#{rows.col1==1? '@': '#'}" rendered="#{rows.col1!=0}"/>
+                             <h:outputText value="-" rendered="#{rows.col1==0}"/>
+					    </p:column>
+					 
+					    <p:column >
+					        <h:outputText value="#{rows.col2==1? '@': '#'}" rendered="#{rows.col2!=0}"/>
+                            <h:outputText value="-" rendered="#{rows.col2==0}"/>					        
+					    </p:column>
+					 
+					    <p:column >
+					        <h:outputText value="#{rows.col3==1? '@': '#'}" rendered="#{rows.col3!=0}"/>
+                            <h:outputText value="-" rendered="#{rows.col3==0}"/>
+					    </p:column>
+					 
+					    <p:column >
+					        <h:outputText value="#{rows.col4==1? '@': '#'}" rendered="#{rows.col4!=0}"/>
+                            <h:outputText value="-" rendered="#{rows.col4==0}"/>
+					    </p:column>
+					    
+					    <p:column >
+					        <h:outputText value="#{rows.col5==1? '@': '#'}" rendered="#{rows.col5!=0}"/>
+                            <h:outputText value="-" rendered="#{rows.col5==0}"/>
+					    </p:column>
+					    
+					    <p:column >
+					        <h:outputText value="#{rows.col6==1? '@': '#'}" rendered="#{rows.col6!=0}"/>
+                            <h:outputText value="-" rendered="#{rows.col6==0}"/>
+					    </p:column>
+					</p:dataTable>
+        			
+	   			</center>
+	   			
+	   			<h:outputText id="player1" value="player 1 (@) : #{gameManagerBean.player1UserName}" style="font-weight: bold" /><br/>
+	   			<h:outputText id="player2" value="player 2 (#) : #{gameManagerBean.player2UserName}" style="font-weight: bold" /><br/><br/>
+	   			
+	   			<h:outputText id="message" value="#{gameManagerBean.statusMsg}" style="font-style: italics" />
+	   			<p:poll interval="3" listener="#{gameManagerBean.checkForPlayer2}" update="message,stats,player2,player1" />
+	   			
+	   			<h:panelGrid columns="4" width="600" border="0" style="margin-left:50px; margin-top:10px">
+	                
+	        		<p:outputLabel for="row" value="Row:" style="width:100px"/>        
+			        <p:selectOneMenu id="row" value="#{gameManagerBean.nextMove.row}" style="width:100px">
+			            <f:selectItem itemLabel="1" itemValue="1" />
+			            <f:selectItem itemLabel="2" itemValue="2" />
+			            <f:selectItem itemLabel="3" itemValue="3" />
+			            <f:selectItem itemLabel="4" itemValue="4" />
+			            <f:selectItem itemLabel="5" itemValue="5" />
+			            <f:selectItem itemLabel="6" itemValue="6" />
+			        </p:selectOneMenu>
+        			
+        			<p:outputLabel for="col" value="Column:" style="width:100px"/>        
+			        
+			        <p:selectOneMenu id="col" value="#{gameManagerBean.nextMove.col}" style="width:100px">
+			            <f:selectItem itemLabel="1" itemValue="1" />
+			            <f:selectItem itemLabel="2" itemValue="2" />
+			            <f:selectItem itemLabel="3" itemValue="3" />
+			            <f:selectItem itemLabel="4" itemValue="4" />
+			            <f:selectItem itemLabel="5" itemValue="5" />
+			            <f:selectItem itemLabel="6" itemValue="6" />
+			        </p:selectOneMenu>
+			        
+			        <h:outputText value="Quadrant:" />
+			       
+			        <p:selectOneRadio id="grid" value="#{gameManagerBean.nextMove.grid}"  layout="grid" columns="2">
+            			<f:selectItems value="#{gameManagerBean.grids}" var="grids" itemLabel="#{grids}" itemValue="#{grids}"/>
+        			</p:selectOneRadio>
+			        
+			        <h:outputText value="Turn Clockwise:" />
+        			<p:selectBooleanButton id="clock" value="#{gameManagerBean.nextMove.clock}" onLabel="Yes" offLabel="No" style="width:60px" />
+			   	</h:panelGrid>
+			   	
+			   	
+			   	<h:panelGrid columns="2" width="600" border="0" style="margin-left:50px; margin-top:10px">
+	                
+	                <p:commandButton  value="Play" action="#{gameManagerBean.playMove}" update="stats,messages" style="margin-left:100px; margin-top:10px" />	
+	                <p:commandButton  value="Exit Game" action="#{gameManagerBean.exitGame}" style="margin-left:50 px; margin-top:10px"/>
+	                
+             	</h:panelGrid>
+             	
+	   		</p:fieldset>
+	   		</center> 
+	   	</h:form>    	
+	</h:body>
+</f:view>
+</html>

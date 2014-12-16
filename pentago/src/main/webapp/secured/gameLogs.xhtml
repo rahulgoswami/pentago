@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<title>Game Logs</title>
+	</h:head>
+	<h:body>
+		
+		<h:form>
+			<p:menubar style="margin-bottom:30px">
+    			<p:menuitem value="Home" icon="ui-icon-home" action="/secured/postLogin"/>
+    			  			
+    			<f:facet name="options">
+    				<h:outputLabel id="user" value="#{gameManagerBean.userName} : " style="margin-right:20px" />
+		            <p:commandButton action="#{loginBean.doLogout}" value="Logout" icon="ui-icon-extlink" />
+        		</f:facet>
+        	</p:menubar>
+        	<center>
+			<p:fieldset legend="Completed Games List" widgetVar="regWidget" style="width: 620px;">
+				<h:panelGrid columns="2" width="300" border="0" style="margin-left:0px">
+					
+					<p:dataTable id="logs" var="gameLogs" value="#{availableGamesBean.gameLogs}">
+					    <p:column headerText="Player 1">
+					        <h:outputText value="#{gameLogs.player1}" />
+					    </p:column>
+					 
+					    <p:column headerText="Player 2">
+					        <h:outputText value="#{gameLogs.player2}" />
+					    </p:column>
+					 
+					    <p:column headerText="Winner">
+					        <h:outputText value="#{gameLogs.winner}" />
+					    </p:column>
+					 
+					    <p:column headerText="Moves">
+					        <h:outputText value="#{gameLogs.gameMoves}" />
+					    </p:column>
+					</p:dataTable>
+					
+				</h:panelGrid>
+				
+            </p:fieldset>
+            </center>
+           
+            
+		</h:form>
+	</h:body>
+</html>

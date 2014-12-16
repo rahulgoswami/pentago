@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<title>First JSF Example</title>
+	</h:head>
+	<h:body>
+		
+		<h:form>
+			<p:menubar style="margin-bottom:30px">
+    			<p:menuitem value="Home" icon="ui-icon-home" action="/secured/postLogin"/>
+    			  			
+    			<f:facet name="options">
+    				<h:outputLabel id="user" value="#{gameManagerBean.userName} : " style="margin-right:20px" />
+		            <p:commandButton action="#{loginBean.doLogout}" value="Logout" icon="ui-icon-extlink" />
+        		</f:facet>
+        	</p:menubar>
+        	<center>
+			<p:fieldset legend="User Statistics" widgetVar="regWidget" style="width: 620px;">
+				<h:panelGrid columns="2" width="300" border="0" style="margin-left:0px">
+					
+					<p:dataTable id="stats" var="statistics" value="#{gameManagerBean.statistics}">
+					    <p:column headerText="User name">
+					        <h:outputText value="#{statistics.userName}" />
+					    </p:column>
+					 
+					    <p:column headerText="Wins">
+					        <h:outputText value="#{statistics.wins}" />
+					    </p:column>
+					 
+					    <p:column headerText="Loses">
+					        <h:outputText value="#{statistics.loses}" />
+					    </p:column>
+					 
+					    <p:column headerText="Draws">
+					        <h:outputText value="#{statistics.draws}" />
+					    </p:column>
+					</p:dataTable>
+					
+				</h:panelGrid>
+				
+            </p:fieldset>
+            </center>
+            <p:poll interval="3" listener="#{gameManagerBean.populateStatistics}" update="stats" />
+            <center>
+            <h:panelGrid columns="2" width="600" border="0" style="margin-bottom:90 px; margin-left:130px; margin-top:30px; ">
+	        	        
+                <p:commandLink action="#{gameManagerBean.populateAvailableGames}" value="Available Games" icon="icon-eye-open"/>
+                <p:commandLink action="#{availableGamesBean.populateGameLogs}" value="Completed Games" icon="icon-eye-open"/>
+                
+               
+             </h:panelGrid>
+            </center>
+             <center>
+             	<p:commandButton action="#{gameManagerBean.createNewGame}" value="Create new game" update="messageBoard" icon="ui-icon-plus-sign"/>
+             	<p:commandButton action="#{gameManagerBean.joinMyExistingGame}" value="Take me to my current game"  update="messageBoard" icon="ui-icon-plus-sign" style="margin-top:100 px; margin-bottom:20px"/> <br/>
+			 	<h:outputLabel id="messageBoard" value="#{gameManagerBean.statusMsg}" style="margin-top:30px"/>
+             </center>
+             <!--  -->
+		</h:form>
+	</h:body>
+</html>

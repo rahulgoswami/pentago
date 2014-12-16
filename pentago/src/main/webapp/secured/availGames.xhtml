@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>  
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Insert title here</title>
+</h:head>
+<h:body>
+		<h:form >
+			<p:menubar style="margin-bottom:30px">
+    			<p:menuitem value="Home" icon="ui-icon-home" action="/secured/postLogin"/>
+    			  			
+    			<f:facet name="options">
+    				<h:outputLabel id="user" value="#{gameManagerBean.userName} : " style="margin-right:20px" />
+		            <p:commandButton action="#{loginBean.doLogout}" value="Logout" icon="ui-icon-extlink" />
+        		</f:facet>
+        	</p:menubar>
+        	
+        	<center>
+			<p:fieldset legend="Games Available" widgetVar="regWidget" style="width: 620px;">
+				
+				
+        		<p:selectOneRadio id="playerSelected" value="#{gameManagerBean.player1UserName}" layout="pageDirection">
+		            <f:selectItems value="#{gameManagerBean.allPlayers}" var="player" itemLabel="#{playerSelected}" itemValue="#{playerSelected}"/> 
+		        </p:selectOneRadio>
+		        <p:poll interval="3" listener="#{gameManagerBean.populateAvailablePlayers}" update="playerSelected" />
+		        
+ 				<p:commandButton id="startGame" value="Start Game"  style="margin-top:5px" action="#{gameManagerBean.joinNewGame}" update="txt_count"/>
+ 					
+ 				<h:outputLabel id="txt_count" value="#{gameManagerBean.statusMsg}" />
+    				 				`
+            </p:fieldset>
+            
+            </center>
+            
+		</h:form>	
+		<!-- <p:orderList value="#{availableGamesBean.players}" var="player" controlsLocation="none" itemLabel="#{player}" itemValue="#{player}" /> -->
+	</h:body>
+</f:view>
+</html>
