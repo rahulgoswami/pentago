@@ -46,9 +46,18 @@ public class GameManagerBean implements Serializable{
 	private String userName;
 	private List<String> allPlayers;
 	private long timer;
-	
+	private String timerMsg;
 	//	private GameVO gameInfo;
 	
+
+	public String getTimerMsg() {
+		return timerMsg;
+	}
+
+	public void setTimerMsg(String timerMsg) {
+		this.timerMsg = timerMsg;
+	}
+
 	public long getTimer() {
 		return timer;
 	}
@@ -174,7 +183,7 @@ public class GameManagerBean implements Serializable{
 		
 		System.out.println("====INSIDE checkForPlayer2============");
 		GameVO game=getCurrentGameById();
-		if(game.getPlayer2()!=null && game.getGameStatus()!="finished")
+		if(game.getPlayer2()!=null && !game.getGameStatus().equals(Configuration.GAME_STATUS_FINISHED))
 		{
 			//System.out.println("====INSIDE checkForPlayer2============"+game.getPlayer2());
 			player2UserName=game.getPlayer2();
@@ -192,14 +201,15 @@ public class GameManagerBean implements Serializable{
 				return;
 			}
 		}
-		else if(game.getGameStatus()=="finished"){
-			
-			statusMsg=player2UserName+"has forfeited. YOU WIN!";
+		else if(game.getGameStatus().equals(Configuration.GAME_STATUS_FINISHED)){
+			System.out.println("HHHHHHHHHHHHHHHHXXXXXXXX:");
+			rows=  MyUtil.stringToList(game.getCurrentBoardStatus());
+			statusMsg=game.getWinner()+" has WON!";
 			return;
 		}
 		else{
 			rows= MyUtil.stringToList("0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;");
-			statusMsg="You cannot play yet. Waiting for other player to join...";
+			statusMsg="Waiting for other player to join...";
 			return;
 		}
 		//System.out.println("HHHHHHHHHHHHHHHHXXXXXXXX:"+ nextMove.getRow());
@@ -215,6 +225,49 @@ public class GameManagerBean implements Serializable{
 	/*this method is used for checking the time */
 	public void checkTimer()
 	{
+		System.out.println("=======in checkTimer=======");
+		GameVO game = getCurrentGameById();
+		long time_diff = System.currentTimeMillis() - game.getLastMoveTimeStamp();
+		System.out.println("=======time diff is======"+time_diff+"game object is+"+game.getPlayer1());
+		if(game.getCurrentPlayer().equals(getOtherPlayerName()))
+		{
+			 if(time_diff < 900000){
+				 timerMsg = "Time left to make a move";
+			 }
+			 else{
+				 updateAfterTimer();
+			 }
+				 
+			//displayInfo("all is well");
+		}
+	/*	else{
+			if(time_diff < 900000){
+				timerMsg = "Your timer has been set";
+			 }
+			else
+				updateAfterTimer();
+			//displayInfo("Your timer has been set");
+		}
+	*/	
+		//return "";
+	}
+	
+	public void updateAfterTimer()
+	{
+		String loser=getOtherPlayerName();
+		
+		String winner=getMyUserName();
+		
+		GameVO gameInfo=getMyNewOrCurrentGame();
+		gameInfo.setGameStatus(Configuration.GAME_STATUS_FINISHED);
+		gameInfo.setWinner(winner);
+		gameInfo.setCurrentPlayer(getOtherPlayerName());
+		gameEJB.updateCurrentGameState(gameInfo);
+		gameEJB.updateStatistics(winner,Configuration.STATISTICS_RESULT_WIN);
+		gameEJB.updateStatistics(loser,Configuration.STATISTICS_RESULT_LOSS);
+		statusMsg = loser+" ran out of time. You have won the game!!";
+		displayInfo("The game has ended! Please exit to continue");
+		//return "postLogin";
 		
 	}
 	
@@ -230,12 +283,11 @@ public class GameManagerBean implements Serializable{
 			
 			GameVO gameInfo=getCurrentGameById();
 			if(gameInfo.getCurrentPlayer().equals(MyUtil.getSessionAttribute("userName")) 
-					&& gameInfo.getGameStatus()!=Configuration.GAME_STATUS_FINISHED)
+					&& !gameInfo.getGameStatus().equals(Configuration.GAME_STATUS_FINISHED))
 			{
 				
 				int piece;
-				timer = System.currentTimeMillis();
-				System.out.println("the current time in ms:" +timer);
+				
 				String currentBoardStatus=gameInfo.getCurrentBoardStatus();
 				String result;
 				if(player1UserName.equals((String)MyUtil.getSessionAttribute("userName"))){
@@ -253,6 +305,11 @@ public class GameManagerBean implements Serializable{
 				}
 				else{
 					System.out.println("LEGAL MOVE");
+					
+					timer = System.currentTimeMillis();
+					System.out.println("the current time in ms:" +timer);
+					gameInfo.setLastMoveTimeStamp(timer);
+					
 					gameInfo.setCurrentPlayer(getOtherPlayerName());
 					if(gameInfo.getGameMoves()==null||gameInfo.getGameMoves().equals(""))
 						gameInfo.setGameMoves(""+nextMove.toString());
@@ -269,7 +326,7 @@ public class GameManagerBean implements Serializable{
 						gameInfo.setWinner(player1UserName);
 						gameInfo.setCurrentBoardStatus(moveResult.getNewBoard());
 						gameInfo.setGameStatus("finished");
-						gameInfo.setCurrentPlayer("");
+						gameInfo.setCurrentPlayer(getOtherPlayerName());
 						result=gameEJB.updateCurrentGameState(gameInfo);
 						if(gameEJB.updateStatistics(player1UserName,Configuration.STATISTICS_RESULT_WIN) &&
 								gameEJB.updateStatistics(player2UserName,Configuration.STATISTICS_RESULT_LOSS)){
@@ -290,7 +347,7 @@ public class GameManagerBean implements Serializable{
 						gameInfo.setWinner(player2UserName);
 						gameInfo.setCurrentBoardStatus(moveResult.getNewBoard());
 						gameInfo.setGameStatus("finished");
-						gameInfo.setCurrentPlayer("");
+						gameInfo.setCurrentPlayer(getOtherPlayerName());
 						result=gameEJB.updateCurrentGameState(gameInfo);
 						if(gameEJB.updateStatistics(player1UserName,Configuration.STATISTICS_RESULT_LOSS) &&
 								gameEJB.updateStatistics(player2UserName,Configuration.STATISTICS_RESULT_WIN)){
@@ -309,7 +366,7 @@ public class GameManagerBean implements Serializable{
 					case "0":
 						System.out.println("PLAY MOVE: TTTT : CASE 0");
 						gameInfo.setWinner("#match drawn#");
-						gameInfo.setCurrentPlayer("");
+						gameInfo.setCurrentPlayer(getOtherPlayerName());
 						gameInfo.setCurrentBoardStatus(moveResult.getNewBoard());
 						gameInfo.setGameStatus("finished");
 						result=gameEJB.updateCurrentGameState(gameInfo);
@@ -341,7 +398,9 @@ public class GameManagerBean implements Serializable{
 			}
 			else if(gameInfo.getGameStatus().equals(Configuration.GAME_STATUS_FINISHED)){
 				displayInfo("Your game has ended! Please EXIT the game to proceed...");
-				gameInfo.setCurrentPlayer("");
+				//gameInfo.setCurrentPlayer("abc");//Nayana commented on 12/16 to (doubtful)
+				
+				statusMsg= gameInfo.getWinner()+" has WON the game!";
 				//rows=MyUtil.stringToList(gameInfo.getCurrentBoardStatus());
 				return;
 			}
@@ -358,9 +417,11 @@ public class GameManagerBean implements Serializable{
 		GameVO myGameObj=getCurrentGameById();
 		if(myGameObj!= null && myGameObj.getGameStatus().equals(Configuration.GAME_STATUS_NEW)){
 			gameEJB.deleteGameObject(myGameObj.getId());
+			statusMsg="";
 			return "postLogin";
 		}
 		else if(myGameObj!= null && myGameObj.getGameStatus().equals(Configuration.GAME_STATUS_FINISHED)){
+			statusMsg="";
 			return "postLogin";
 		}
 		String loser=getMyUserName();
@@ -373,6 +434,7 @@ public class GameManagerBean implements Serializable{
 		gameEJB.updateCurrentGameState(gameInfo);
 		gameEJB.updateStatistics(winner,Configuration.STATISTICS_RESULT_WIN);
 		gameEJB.updateStatistics(loser,Configuration.STATISTICS_RESULT_LOSS);
+		statusMsg="You have lost the previous game.";
 		return "postLogin";
 		
 	}
@@ -404,6 +466,7 @@ public class GameManagerBean implements Serializable{
 	}
 	
 	public String populateAvailableGames(){
+		statusMsg="";
 		System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPP=========HEY I AM in AvailableGames!!!!!!!========");
 		setAllPlayers(gameEJB.returnAvailablePlayers());
 		return "/secured/availGames"; 
@@ -412,7 +475,7 @@ public class GameManagerBean implements Serializable{
 		
 	public String createNewGame(){
 		statusMsg="";
-		
+		player2UserName=null;
 		System.out.println("====createNewGame() is getting called==========");
 		player1UserName=(String)MyUtil.getSessionAttribute("userName");
 		System.out.println("USERNAME:" + player1UserName);
@@ -422,6 +485,7 @@ public class GameManagerBean implements Serializable{
 			gameInfo.setPlayer1(player1UserName);
 			gameInfo.setCurrentPlayer(player1UserName);
 			gameInfo.setCurrentBoardStatus("0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;0,0,0,0,0,0;");
+			gameInfo.setLastMoveTimeStamp(System.currentTimeMillis());
 			String status=gameEJB.createGameInstance(gameInfo);
 			getMyNewOrCurrentGame(); // To save current game's ID in 'gameID' for future use. 
 			if(status.equals("success")){
@@ -434,7 +498,7 @@ public class GameManagerBean implements Serializable{
 			}
 		}
 		else{
-			statusMsg="You have already created a game. Go join that idiot!";
+			statusMsg="You have already created a game. You need to complete it!";
 			return "/secured/postLogin";
 		}
 	}
@@ -462,12 +526,14 @@ public class GameManagerBean implements Serializable{
 		List<String> states=new ArrayList<String>();
 		if(isValidGameJoiningOrCreation()){
 			states.add("new");
+			
 			List<GameVO> newGamesList=gameEJB.getNewGameObject(player1UserName,states);
 			if(newGamesList.size()!=0){
 				GameVO game=newGamesList.get(0);
 				player2UserName=(String)MyUtil.getSessionAttribute("userName");
 				game.setPlayer2(player2UserName);
 				game.setGameStatus("current");
+				game.setLastMoveTimeStamp(System.currentTimeMillis());
 				//game.setLastPlayerMoved(player2UserName);
 				//gameInfo=game;
 				String result=gameEJB.updateCurrentGameState(game);
@@ -485,7 +551,7 @@ public class GameManagerBean implements Serializable{
 			}
 			else{
 				System.out.println("GGGGG=======joinNewGame======");
-				statusMsg="Oops! Sombody already joined the requested game. Please choose another game";
+				statusMsg="Please select a game to join.";
 				return "/secured/availGames"; 
 			}
 
@@ -501,7 +567,10 @@ public class GameManagerBean implements Serializable{
 	public String joinMyExistingGame(){
 		statusMsg="";
 		GameVO currGame=getMyNewOrCurrentGame();
+		
 		if(getMyUserName().equals(currGame.getPlayer1()) || getMyUserName().equals(currGame.getPlayer2())){
+			player1UserName=currGame.getPlayer1();
+			player2UserName=currGame.getPlayer2();
 			return "/secured/newGame";
 		}
 		else{
@@ -561,6 +630,8 @@ public class GameManagerBean implements Serializable{
 			FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
 			//return "postLogin";
 		}
+		/*
+		else{
 		String loser=getMyUserName();
 		
 		String winner=getOtherPlayerName();
@@ -571,6 +642,7 @@ public class GameManagerBean implements Serializable{
 		gameEJB.updateCurrentGameState(gameInfo);
 		gameEJB.updateStatistics(winner,Configuration.STATISTICS_RESULT_WIN);
 		gameEJB.updateStatistics(loser,Configuration.STATISTICS_RESULT_LOSS);
+		}*/
 		HttpSession session=(HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 		//System.out.println("session is :"+session);
 		session.invalidate();

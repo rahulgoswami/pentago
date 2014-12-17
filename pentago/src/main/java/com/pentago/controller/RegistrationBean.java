@@ -50,6 +50,8 @@ public class RegistrationBean implements Serializable
 		 String pwd = passwordtohash.getSecurePassword(playerInfo.getPassword(), salt);
 		 playerInfo.setSalt(salt);
 		 playerInfo.setPassword(pwd);
+		 System.out.println("Length of Salt is "+salt.length());
+		 System.out.println("Length of password "+pwd.length());
 		 String status=playerEJB.savePlayerInfo(playerInfo);
 		 if(status=="success")
 			 return "index";

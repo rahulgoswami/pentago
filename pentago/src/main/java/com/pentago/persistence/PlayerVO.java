@@ -32,6 +32,7 @@ public class PlayerVO implements Serializable {
 	private String				password;
 
 	@NotNull
+	@Size(min = 0, max = 21844)
 	private String				salt;
 	
 	private String				email;

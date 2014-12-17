@@ -41,6 +41,15 @@ public class AvailableGamesBean implements Serializable{
 	private String message;
 	
 	private List<GameVO> gameLogs;
+	
+	public List<GameVO> getGameLogs() {
+		return gameLogs;
+	}
+
+	public void setGameLogs(List<GameVO> gameLogs) {
+		this.gameLogs = gameLogs;
+	}
+
 
 	public String getPlayerSelected() {
 		return playerSelected;
@@ -69,12 +78,10 @@ public class AvailableGamesBean implements Serializable{
 		players = gameEJBApp.returnAvailablePlayers();
 		return "/secured/availGames"; 
 	}
-	
 	public String populateGameLogs(){
 		gameLogs=gameEJBApp.getGameLogs();
 		return "/secured/gameLogs";
 	}
-	
 	/*
 
 	public void populateAvailablePlayers(){
@@ -106,14 +113,6 @@ public class AvailableGamesBean implements Serializable{
 
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	public List<GameVO> getGameLogs() {
-		return gameLogs;
-	}
-
-	public void setGameLogs(List<GameVO> gameLogs) {
-		this.gameLogs = gameLogs;
 	}
 
 }

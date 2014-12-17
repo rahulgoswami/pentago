@@ -8,7 +8,7 @@
 <f:view>  
 	<h:head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-		<title>Insert title here</title>
+		<title>Game Area</title>
 	</h:head>
 	<h:body>
 		<h:form>
@@ -60,8 +60,11 @@
 	   			<h:outputText id="player1" value="player 1 (@) : #{gameManagerBean.player1UserName}" style="font-weight: bold" /><br/>
 	   			<h:outputText id="player2" value="player 2 (#) : #{gameManagerBean.player2UserName}" style="font-weight: bold" /><br/><br/>
 	   			
-	   			<h:outputText id="message" value="#{gameManagerBean.statusMsg}" style="font-style: italics" />
+	   			<h:outputText id="message" value="#{gameManagerBean.statusMsg}" style="font-style: italics" /> <br/>
 	   			<p:poll interval="3" listener="#{gameManagerBean.checkForPlayer2}" update="message,stats,player2,player1" />
+	   			
+	   			
+	   			<p:poll interval="15" listener="#{gameManagerBean.checkTimer}" />
 	   			
 	   			<h:panelGrid columns="4" width="600" border="0" style="margin-left:50px; margin-top:10px">
 	                
@@ -99,7 +102,7 @@
 			   	
 			   	<h:panelGrid columns="2" width="600" border="0" style="margin-left:50px; margin-top:10px">
 	                
-	                <p:commandButton  value="Play" action="#{gameManagerBean.playMove}" update="stats,messages" style="margin-left:100px; margin-top:10px" />	
+	                <p:commandButton  value="Play" action="#{gameManagerBean.playMove}" update="stats,messages,player1,player2" style="margin-left:100px; margin-top:10px" />	
 	                <p:commandButton  value="Exit Game" action="#{gameManagerBean.exitGame}" style="margin-left:50 px; margin-top:10px"/>
 	                
              	</h:panelGrid>

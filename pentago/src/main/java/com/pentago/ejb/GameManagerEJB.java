@@ -25,6 +25,7 @@ public class GameManagerEJB {
 		try{
 			game=em.merge(game);
 			em.persist(game);
+			
 			return "success";
 		}
 		catch(Exception ex){
@@ -168,7 +169,7 @@ public class GameManagerEJB {
 		statistics = query.getResultList();
 		return statistics;
 	}
-
+	
 	public List<GameVO> getGameLogs() {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
@@ -181,6 +182,5 @@ public class GameManagerEJB {
 		return entries;
 		
 	}
-	
 	
 }

@@ -7,15 +7,12 @@ xmlns:h="http://java.sun.com/jsf/html"
 xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-<title>First JSF Example</title>
+<title>Login Page</title>
 </h:head>
 <h:body>
-	<h2><center>Welcome! Let the games begin!!</center></h2>
+	<h2><center>Welcome to Pentago! Let the games begin!!</center></h2>
 		<h:form>
-			<p:menubar style="margin-bottom:30px">
-				<p:menuitem value="Home" icon="ui-icon-home" url="index.xhtml"/>	
-   			</p:menubar>
-   			<center>
+			<center>
 			<p:fieldset legend="Login Form" widgetVar="regWidget" style="width: 720px;">
 				<h:outputLabel id="displayResponse" value="#{loginBean.message}" style="font-size:15px; color:#ff0000"/>
 				<h:panelGrid columns="3" width="600px" border="0" style="margin-bottom:10px">
@@ -36,6 +33,7 @@ xmlns:p="http://primefaces.org/ui">
 				    	required="true" 
 				        requiredMessage="Password is required"
 				        validatorMessage="Password should be of length from 5 to 15 chars">
+				      <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"></f:validateRegex>
 				     <f:validateLength minimum="5" maximum="15" for="password"/>
 				     </p:password>
 	                <p:message for="password"/>
@@ -43,8 +41,9 @@ xmlns:p="http://primefaces.org/ui">
 	                <!-- <p:message/> --><!-- <p:message/> -->
 	                
 	             </h:panelGrid>
-	             <p:commandButton actionListener="#{loginBean.validateLogin}" action="#{loginBean.validateLogin}" value="Login" update="displayResponse" ajax = "false" style="margin-bottom:20px"/><br/>
-	             <h:link value="New User? Register here" outcome="registration" />
+	             <p:commandButton actionListener="#{loginBean.validateLogin}"  ajax="false" action="#{loginBean.validateLogin}" value="Login" update="displayResponse" style="margin-bottom:20px"/><br/>
+	             <h:link value="New User? Register here" outcome="registration" /><br/>
+	             <h:link value="Game Rules" outcome="gameRules" />
             </p:fieldset>
             </center>
 			

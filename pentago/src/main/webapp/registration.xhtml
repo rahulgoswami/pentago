@@ -9,14 +9,14 @@
 
 </h:head> 
 <h:body> 
-	 <h2><center>REGISTRATION FORM</center></h2>
+	 <h2><center>Registration Page</center></h2>
 	 <h:form>
 	 	  <p:menubar style="margin-bottom:30px">
     			<p:menuitem value="Home" icon="ui-icon-home" url="index.xhtml"/>
     			  			
         	</p:menubar>
         	<center>
-		  <p:fieldset legend="Registration Form" widgetVar="regWidget" style="width: 720px;">
+		  <p:fieldset legend="Registration Form" widgetVar="regWidget" style="width: 820px;">
 			   <h:panelGrid columns="3" width="700" border="0">
 				    <h:outputLabel for= "userName" value="UserName*" />
 				    <p:inputText value="#{registrationBean.playerInfo.userName}" 
@@ -34,9 +34,10 @@
 				       id="password"
 				       required="true" 
 				       requiredMessage="Password is required"
-				       validatorMessage="Password should be of length from 5 to 15 chars, contains lower and upper with special symbols">
-				       <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"></f:validateRegex>>
-				    <f:validateLength minimum="5" maximum="20" for="password"></f:validateLength>
+				       validatorMessage="Must be 5 to 15 chars + lower,upper case letters + special characters">
+				    <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"></f:validateRegex>
+				    <f:validateLength minimum="5" maximum="15" for="password"></f:validateLength>
+				    
 				    </p:password>
 				    <p:message for="password" />
 				    
@@ -52,16 +53,23 @@
 				    <p:message for="firstName" />
 				    
 				    
-				    <h:outputLabel value="Last Name" />
-				    <p:inputText value="#{registrationBean.playerInfo.lastName}"
-				       id="lastName"></p:inputText>
+				     <h:outputLabel value="Last Name*" />
+				      <p:inputText value="#{registrationBean.playerInfo.lastName}"
+				       id="lastName"
+				       required="true" 
+				       requiredMessage="LastName is required"
+				       validatorMessage="LastName should be of length from 5 to 15 chars"
+				       >
+				      <f:validateLength minimum="5" maximum="30" for="lastName"></f:validateLength>
+				      </p:inputText>
 				    <p:message for="lastName" />
 				    
-				    <h:outputLabel value="Email*" />
+				    <h:outputLabel value="Email" />
 				    <p:inputText value="#{registrationBean.playerInfo.email}"
 				       id="email"
 				       validatorMessage="Invalid Email">
 				     <f:validateRegex pattern="[a-zA-Z0-9]+@[a-zA-Z]+.[a-zA-Z]{2,3}"></f:validateRegex>   
+				    <f:validateLength minimum="5" maximum="30" for="email"></f:validateLength>
 				    </p:inputText>
 				    <p:message for="email" />
 				   

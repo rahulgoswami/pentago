@@ -23,7 +23,7 @@ public class GameVO implements Serializable {
 
 	private String				winner;
 	
-	@Size(min = 0, max = 300)
+	@Size(min = 0, max = 400)
 	private String				gameMoves;
 
 	@NotNull
@@ -31,6 +31,7 @@ public class GameVO implements Serializable {
 
 	private String 				currentPlayer;
 	private String 				currentBoardStatus;
+	private long				lastMoveTimeStamp;
 	
 	/*
 	@Past
@@ -113,6 +114,14 @@ public class GameVO implements Serializable {
 
 	public void setCurrentPlayer(String currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	public long getLastMoveTimeStamp() {
+		return lastMoveTimeStamp;
+	}
+
+	public void setLastMoveTimeStamp(long lastMoveTimeStamp) {
+		this.lastMoveTimeStamp = lastMoveTimeStamp;
 	}
 	
 	
